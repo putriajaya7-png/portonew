@@ -238,6 +238,41 @@
         #videoModal {
             transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
+
+        /* Animated moving background for About section */
+        #about {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-bg-motion {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 18% 20%, rgba(251, 113, 133, 0.18), transparent 18%),
+                        radial-gradient(circle at 82% 24%, rgba(96, 165, 250, 0.14), transparent 20%),
+                        radial-gradient(circle at 42% 80%, rgba(190, 18, 60, 0.10), transparent 22%);
+            opacity: 0.9;
+            pointer-events: none;
+            filter: blur(24px);
+            transform: translateZ(0);
+            animation: aboutBackgroundMove 18s ease-in-out infinite alternate;
+            z-index: 0;
+        }
+
+        @keyframes aboutBackgroundMove {
+            0% {
+                transform: translate(0px, 0px) scale(1);
+                background-position: 18% 20%, 82% 24%, 42% 80%;
+            }
+            50% {
+                transform: translate(-10px, 8px) scale(1.01);
+                background-position: 15% 18%, 85% 26%, 44% 78%;
+            }
+            100% {
+                transform: translate(10px, -10px) scale(1.02);
+                background-position: 20% 22%, 80% 22%, 40% 82%;
+            }
+        }
     </style>
 </head>
 <body class="selection:bg-rose-950/40 selection:text-rose-200">
@@ -249,9 +284,9 @@
     <nav class="fixed w-full z-50 top-0 glass-panel border-b border-white/5">
         <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
             <div class="flex items-center space-x-2">
-                <span class="text-xl font-extrabold tracking-tighter text-white">PORTOFOLIO<span class="text-rose-500">.</span></span>
+                <span class="text-xl font-extrabold tracking-tighter text-white">PORTOFOLIO</span>
             </div>
-            
+
             <div class="hidden md:flex space-x-10 font-semibold text-[11px] uppercase tracking-[0.25em]">
                 <a href="#home" class="hover:text-rose-400 transition-colors">Beranda</a>
                 <a href="#about" class="hover:text-rose-400 transition-colors">Profil</a>
@@ -339,7 +374,7 @@
     </section>
 
     <section id="about" class="py-32 px-6 bg-[#03030d] relative">
-        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-rose-950/5 to-transparent"></div>
+        <div class="about-bg-motion"></div>
         <div class="max-w-7xl mx-auto relative z-10">
             <div class="grid lg:grid-cols-2 gap-20 items-center">
                 <div class="space-y-8">
@@ -708,8 +743,10 @@
         const lowPowerMode = prefersReducedMotion ||
             (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
             (navigator.deviceMemory && navigator.deviceMemory <= 4);
-        const getRenderPixelRatio = () => Math.min(window.devicePixelRatio || 1, lowPowerMode ? 1 : 1.25);
-        const getMaxFrameInterval = () => lowPowerMode ? 1000 / 30 : 1000 / 45;
+        const enableLightfall = false;
+        const enableFloatingLines = true;
+        const getRenderPixelRatio = () => 1;
+        const getMaxFrameInterval = () => 1000 / 30;
 
         // =========================================================================
         // LIGHTFALL WEBGL GENERATOR (Integrated Vanilla implementation of React Bits)
@@ -717,7 +754,10 @@
         (function() {
             const MAX_COLORS = 8;
             const container = document.getElementById('lightfall-bg');
-            if (!container || !window.ogl) return;
+            if (!container || !window.ogl || !enableLightfall) {
+                if (container) container.style.display = 'none';
+                return;
+            }
 
             const hexToRGB = hex => {
                 const c = hex.replace('#', '').padEnd(6, '0');
@@ -1199,8 +1239,8 @@
 
             // High-grade design gradients matches Maroon & Cobalt Cyber Blue
             const linesGradient = ['#be123c', '#881337', '#1e3a8a', '#fb7185']; 
-            const enabledWaves = lowPowerMode ? ['middle', 'bottom'] : ['top', 'middle', 'bottom'];
-            const lineCount = lowPowerMode ? [8, 10, 14] : [10, 15, 20];
+            const enabledWaves = ['middle'];
+            const lineCount = [0, 10, 0];
             const lineDistance = [8, 6, 4];
 
             const topLineCount = enabledWaves.includes('top') ? lineCount[0] : 0;
@@ -1315,10 +1355,9 @@
                 });
             }
 
-            const floatingLinesTargetFPS = lowPowerMode ? 30 : 50;
-            const floatingLinesFrameInterval = 1000 / floatingLinesTargetFPS;
+            const floatingLinesFrameInterval = 1000 / 30;
             let lastFloatingFrame = 0;
-            let floatingLinesActive = true;
+            let floatingLinesActive = enableFloatingLines;
 
             document.addEventListener('visibilitychange', () => {
                 floatingLinesActive = !document.hidden;
