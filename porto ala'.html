@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amalia Putri | Software Engineer & Team Leader</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Load OGL library for high-performance WebGL Lightfall component -->
+    <script src="https://unpkg.com/ogl@1.0.0/dist/ogl.umd.js"></script>
+    
+    <!-- Load Three.js library for high-performance WebGL FloatingLines component -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        
+        :root {
+            --navy-deep: #03030d;      /* Pitch-dark royal navy */
+            --navy-dark: #07071a;      /* Deep midnight blue layer */
+            --navy-surface: #0d0d26;   /* Rich glass surface */
+            --maroon-deep: #4c0519;    /* Rich velvet maroon */
+            --maroon-glow: #be123c;    /* High-intensity crimson/maroon core */
+            --maroon-bright: #fb7185;  /* Sparkling light rose/maroon */
+            --cobalt-glow: #1d4ed8;    /* Cyber blue contrast shadow */
+            --cobalt-bright: #60a5fa;  /* Electric sky blue accent */
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--navy-deep);
+            color: #f1f5f9;
+            overflow-x: hidden;
+            /* Premium Cyber Midnight Background Grid with Dual Glows */
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(190, 18, 60, 0.15) 0px, transparent 55%),
+                radial-gradient(at 100% 0%, rgba(29, 78, 216, 0.12) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(190, 18, 60, 0.08) 0px, transparent 60%),
+                radial-gradient(at 0% 100%, rgba(29, 78, 216, 0.15) 0px, transparent 55%),
+                radial-gradient(at 100% 100%, rgba(190, 18, 60, 0.15) 0px, transparent 55%),
+                linear-gradient(to right, rgba(255, 255, 255, 0.005) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.005) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 70px 70px, 70px 70px;
+        }
+
+        /* Lightfall canvas container style */
+        #lightfall-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -20;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            mix-blend-mode: screen;
+            opacity: 0.7;
+        }
+
+        /* FloatingLines canvas container style */
+        #floating-lines-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -15;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            mix-blend-mode: screen;
+            opacity: 0.65;
+        }
+
+        /* Ultra Premium Glassmorphism with Maroon Neon Edge Glow */
+        .glass-panel {
+            background: rgba(13, 13, 38, 0.65);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(190, 18, 60, 0.15);
+            box-shadow: 
+                0 20px 50px -15px rgba(0, 0, 0, 0.8),
+                inset 0 1px 2px rgba(255, 255, 255, 0.05);
+        }
+
+        /* Metallic Crimson-Cobalt Text Gradient */
+        .text-gradient {
+            background: linear-gradient(135deg, var(--cobalt-bright) 0%, var(--maroon-bright) 50%, var(--maroon-glow) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shine 8s linear infinite;
+        }
+
+        @keyframes shine {
+            0% { background-position: 0% center; }
+            50% { background-position: 100% center; }
+            100% { background-position: 0% center; }
+        }
+
+        /* Gacor Glowing Button */
+        .btn-primary {
+            background: linear-gradient(135deg, #be123c 0%, #1e3a8a 50%, #881337 100%);
+            background-size: 200% auto;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(135deg, var(--maroon-bright), var(--cobalt-bright), var(--maroon-glow));
+            background-size: 200% auto;
+            border-radius: inherit;
+            z-index: -1;
+            opacity: 0;
+            filter: blur(12px);
+            transition: opacity 0.5s ease;
+        }
+
+        .btn-primary:hover {
+            background-position: right center;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 35px -5px rgba(190, 18, 60, 0.45);
+        }
+
+        .btn-primary:hover::before {
+            opacity: 0.8;
+            animation: shine 4s linear infinite;
+        }
+
+        .nav-active {
+            color: var(--maroon-bright);
+            text-shadow: 0 0 15px rgba(251, 113, 133, 0.6);
+        }
+
+        /* Project Cards with Magnetic Maroon Edge */
+        .project-card {
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            z-index: 1;
+            background: rgba(7, 7, 26, 0.5);
+        }
+
+        .project-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 32px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(190,18,60,0.1));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            z-index: 2;
+            transition: all 0.5s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 
+                0 30px 60px -15px rgba(0, 0, 0, 0.9),
+                0 0 35px -5px rgba(190, 18, 60, 0.3);
+            background: rgba(13, 13, 38, 0.85);
+        }
+
+        .project-card:hover::after {
+            background: linear-gradient(135deg, var(--maroon-bright), var(--cobalt-bright));
+        }
+
+        /* Holographic Pulsing Skill Badges */
+        .skill-badge {
+            background: rgba(13, 13, 38, 0.4);
+            border: 1px solid rgba(190, 18, 60, 0.15);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-badge::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 120%, rgba(190, 18, 60, 0.2), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .skill-badge:hover {
+            background: rgba(26, 7, 26, 0.6);
+            border-color: rgba(190, 18, 60, 0.4);
+            box-shadow: 
+                0 20px 40px -10px rgba(0, 0, 0, 0.6),
+                0 0 25px -5px rgba(190, 18, 60, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .skill-badge:hover::before {
+            opacity: 1;
+        }
+
+        /* Float & Pulse Effects */
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(0.5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        .animate-float {
+            animation: float 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(0.95); opacity: 0.25; }
+            50% { transform: scale(1.05); opacity: 0.5; }
+            100% { transform: scale(0.95); opacity: 0.25; }
+        }
+
+        .pulse-glow {
+            animation: pulseGlow 4s ease-in-out infinite;
+        }
+
+        /* Custom Premium Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--navy-deep);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--navy-surface), var(--maroon-glow), var(--cobalt-bright));
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--maroon-bright);
+        }
+
+        #videoModal {
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+    </style>
+</head>
+<body class="selection:bg-rose-950/40 selection:text-rose-200">
+
+    <!-- Interactive WebGL Background Layers -->
+    <div id="lightfall-bg"></div>
+    <div id="floating-lines-bg"></div>
+
+    <nav class="fixed w-full z-50 top-0 glass-panel border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <span class="text-xl font-extrabold tracking-tighter text-white">PORTOFOLIO<span class="text-rose-500">.</span></span>
+            </div>
+            
+            <div class="hidden md:flex space-x-10 font-semibold text-[11px] uppercase tracking-[0.25em]">
+                <a href="#home" class="hover:text-rose-400 transition-colors">Beranda</a>
+                <a href="#about" class="hover:text-rose-400 transition-colors">Profil</a>
+                <a href="#projects" class="hover:text-rose-400 transition-colors">Showcase</a>
+                <a href="#skills" class="hover:text-rose-400 transition-colors">Keahlian</a>
+            </div>
+
+            <button class="md:hidden text-gray-400 hover:text-white transition-colors" onclick="toggleMenu()">
+                <i class="fa-solid fa-bars-staggered text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-slate-950/98 border-b border-white/5 px-6 py-8 space-y-6">
+            <a href="#home" class="block text-lg font-medium text-slate-300 hover:text-rose-400 transition-colors" onclick="toggleMenu()">Beranda</a>
+            <a href="#about" class="block text-lg font-medium text-slate-300 hover:text-rose-400 transition-colors" onclick="toggleMenu()">Tentang</a>
+            <a href="#projects" class="block text-lg font-medium text-slate-300 hover:text-rose-400 transition-colors" onclick="toggleMenu()">Proyek</a>
+            <a href="#skills" class="block text-lg font-medium text-slate-300 hover:text-rose-400 transition-colors" onclick="toggleMenu()">Keahlian</a>
+        </div>
+    </nav>
+
+    <section id="home" class="min-h-screen flex items-center justify-center pt-24 px-6 relative overflow-hidden">
+        <!-- Background Glowing Orbs -->
+        <div class="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-rose-900/10 rounded-full blur-[150px] -z-10 pulse-glow"></div>
+        <div class="absolute bottom-1/4 left-1/4 w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[150px] -z-10 pulse-glow" style="animation-delay: -2s;"></div>
+
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+            <div class="text-center lg:text-left space-y-8">
+                <div class="inline-flex items-center space-x-3 px-4 py-2 bg-rose-950/20 border border-rose-500/20 rounded-full shadow-[0_0_15px_rgba(190,18,60,0.15)]">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+                    </span>
+                    <span class="text-xs font-bold uppercase tracking-widest text-rose-400">Available for Collaboration</span>
+                </div>
+
+                <h1 class="text-5xl lg:text-7xl font-extrabold leading-[1.1] tracking-tight text-white">
+                    Software <span class="text-gradient">Engineer</span> & <br>
+                    <span class="italic font-light">Team Leader.</span>
+                </h1>
+
+                <p class="text-lg text-slate-400 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                    Siswi Rekayasa Perangkat Lunak dari <span class="text-white font-semibold">SMK Negeri 4 Batam</span>. Berfokus pada pengembangan sistem web modern, integrasi AI, dan solusi IoT dengan pendekatan kepemimpinan yang tegas dan terstruktur.
+                </p>
+
+                <div class="flex flex-wrap justify-center lg:justify-start gap-5">
+                    <a href="#projects" class="btn-primary px-10 py-4 rounded-2xl font-bold text-white shadow-xl">
+                        Lihat Proyek
+                    </a>
+                    <a href="#about" class="px-10 py-4 bg-slate-900/40 border border-white/10 rounded-2xl font-bold hover:bg-slate-800 hover:border-rose-500/30 transition-all">
+                        Kenali Saya
+                    </a>
+                </div>
+            </div>
+
+            <div class="relative flex justify-center lg:justify-end animate-float">
+                <div class="relative group">
+                    <!-- High-tech Matrix Aura behind Image -->
+                    <div class="absolute -inset-5 bg-gradient-to-r from-rose-700 via-rose-950 to-blue-900 rounded-[44px] blur opacity-35 group-hover:opacity-55 transition duration-1000"></div>
+                    <div class="relative w-72 h-72 lg:w-[400px] lg:h-[400px] rounded-[36px] overflow-hidden border border-rose-500/20 bg-slate-950 shadow-3xl">
+                        <img src="https://i.ibb.co/bMhc7TXX/Whats-App-Image-2026-05-05-at-20-20-57.jpg" 
+                             alt="Amalia Putri" 
+                             class="w-full h-full object-cover scale-102 group-hover:scale-100 transition-transform duration-700 filter saturate-105"
+                             onerror="this.src='https://ui-avatars.com/api/?name=Amalia+Putri&background=9f1239&color=fff&size=512'">
+                        
+                        <!-- Premium overlay -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
+                    </div>
+                    
+                    <!-- Decorative Floating Cyber Glass Panel -->
+                    <div class="absolute -bottom-6 -right-6 glass-panel p-5 rounded-2xl border border-white/10 shadow-2xl hidden md:block transition-all duration-300 group-hover:transform group-hover:translate-x-2 group-hover:translate-y-2">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-rose-500/20 rounded-full flex items-center justify-center text-rose-400">
+                                <i class="fa-solid fa-check-double"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Project Status</p>
+                                <p class="text-sm font-bold text-white">100% Focused</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-32 px-6 bg-[#03030d] relative">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-rose-950/5 to-transparent"></div>
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="grid lg:grid-cols-2 gap-20 items-center">
+                <div class="space-y-8">
+                    <div class="space-y-4">
+                        <h3 class="text-rose-400 font-bold tracking-[0.25em] text-xs uppercase">About Me</h3>
+                        <h2 class="text-4xl font-extrabold text-white leading-tight">Membangun Masa Depan Melalui Kode & Komunikasi.</h2>
+                    </div>
+                    
+                    <p class="text-slate-400 text-lg leading-relaxed">
+                        Saya bukan sekadar praktisi kode; saya adalah seorang komunikator dan pemimpin tim. Ketertarikan saya pada teknologi bukan hanya tentang fungsionalitas, tapi tentang bagaimana teknologi dapat menyelesaikan masalah nyata dengan efisiensi tinggi.
+                    </p>
+
+                    <div class="grid sm:grid-cols-2 gap-6">
+                        <div class="p-6 glass-panel rounded-3xl border border-white/5 hover:border-rose-500/30 transition-all duration-500">
+                            <div class="w-12 h-12 bg-rose-500/10 rounded-2xl flex items-center justify-center text-rose-400 mb-4 shadow-[0_0_15px_rgba(190,18,60,0.2)]">
+                                <i class="fa-solid fa-bolt text-xl"></i>
+                            </div>
+                            <h4 class="font-bold text-white mb-2">High Curiosity</h4>
+                            <p class="text-sm text-slate-400">Selalu mengeksplorasi teknologi terbaru seperti AI Integration dan IoT.</p>
+                        </div>
+                        <div class="p-6 glass-panel rounded-3xl border border-white/5 hover:border-blue-500/30 transition-all duration-500">
+                            <div class="w-12 h-12 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-400 mb-4 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
+                                <i class="fa-solid fa-shield-halved text-xl"></i>
+                            </div>
+                            <h4 class="font-bold text-white mb-2">Strong Leadership</h4>
+                            <p class="text-sm text-slate-400">Berpengalaman mengoordinasikan tim proyek dengan tegas dan terukur.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-[40px] p-8 lg:p-12 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-8">
+                        <i class="fa-solid fa-quote-right text-6xl text-white/5"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-8 flex items-center">
+                        <span class="w-8 h-[2px] bg-rose-500 mr-4 shadow-[0_0_10px_var(--maroon-glow)]"></span>
+                        Core Philosophies
+                    </h3>
+                    <div class="space-y-8">
+                        <div class="flex gap-6 group">
+                            <div class="text-3xl font-black text-slate-700 group-hover:text-rose-400 transition-colors duration-300">01</div>
+                            <div>
+                                <h4 class="font-bold text-white text-lg group-hover:text-rose-300 transition-colors duration-300">Public Speaking</h4>
+                                <p class="text-slate-400 mt-1">Mampu mempresentasikan id teknis kompleks ke dalam narasi yang mudah dipahami oleh audiens umum.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-6 group">
+                            <div class="text-3xl font-black text-slate-700 group-hover:text-blue-400 transition-colors duration-300">02</div>
+                            <div>
+                                <h4 class="font-bold text-white text-lg group-hover:text-blue-300 transition-colors duration-300">Field Interviewer</h4>
+                                <p class="text-slate-400 mt-1">Berpengalaman melakukan riset lapangan langsung (Project MBG & RT) untuk mendapatkan data valid.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-6 group">
+                            <div class="text-3xl font-black text-slate-700 group-hover:text-rose-400 transition-colors duration-300">03</div>
+                            <div>
+                                <h4 class="font-bold text-white text-lg group-hover:text-rose-300 transition-colors duration-300">Continuous Learning</h4>
+                                <p class="text-slate-400 mt-1">Menganggap kegagalan sebagai "Experimental Project" yang menjadi bahan evaluasi untuk hasil maksimal.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="py-32 px-6 bg-slate-950 relative">
+        <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-6">
+                <div class="space-y-4">
+                    <h3 class="text-rose-400 font-bold tracking-[0.25em] text-xs uppercase">Portfolio</h3>
+                    <h2 class="text-4xl font-extrabold text-white">Selected Projects</h2>
+                </div>
+                <p class="text-slate-400 max-w-sm">Kumpulan karya pilihan mulai dari sistem web fungsional hingga eksperimen IoT tingkat lanjut.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1: Angkasa Web -->
+                <div class="project-card glass-panel rounded-[32px] overflow-hidden flex flex-col h-full group">
+                    <div class="h-56 bg-slate-900 relative overflow-hidden flex items-center justify-center">
+                        <div class="absolute inset-0 bg-gradient-to-br from-rose-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
+                        <img src="https://i.ibb.co/HfPxpK1Y/Whats-App-Image-2026-05-06-at-18-29-23.jpg" 
+                             alt="Angkasa Web" 
+                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108">
+                    </div>
+                    <div class="p-8 flex flex-col flex-grow">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-2xl font-bold text-white group-hover:text-rose-300 transition-colors">Angkasa Web</h3>
+                            <span class="text-[10px] font-black bg-rose-500/10 text-rose-400 px-3 py-1 rounded-full uppercase tracking-widest border border-rose-500/20 shadow-[0_0_10px_rgba(190,18,60,0.1)]">Interactive UI</span>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-8 leading-relaxed">Platform informasi interaktif bertema luar angkasa dengan fokus pada estetika Glassmorphism yang modern.</p>
+                        <div class="mt-auto flex items-center justify-between">
+                            <div class="flex -space-x-2">
+                                <div class="w-9 h-9 rounded-full bg-slate-900/90 border border-white/10 flex items-center justify-center text-[10px] font-bold text-rose-300 shadow-md">HTML</div>
+                                <div class="w-9 h-9 rounded-full bg-slate-900/90 border border-white/10 flex items-center justify-center text-[10px] font-bold text-rose-300 shadow-md">CSS</div>
+                            </div>
+                            <a href="https://putriajaya7-png.github.io/angkasa/" target="_blank" class="text-rose-400 font-bold text-sm flex items-center hover:text-rose-300 hover:underline transition-colors">
+                                Launch <i class="fa-solid fa-arrow-up-right-from-square ml-2 text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2: Smart Photobooth -->
+                <div class="project-card glass-panel rounded-[32px] overflow-hidden flex flex-col h-full group">
+                    <div class="h-56 bg-slate-900 relative overflow-hidden flex items-center justify-center">
+                        <div class="absolute inset-0 bg-gradient-to-br from-rose-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
+                        <img src="https://i.ibb.co/svRxdDJw/Whats-App-Image-2026-05-06-at-18-25-41.jpg" 
+                             alt="Smart Photobooth" 
+                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108">
+                    </div>
+                    <div class="p-8 flex flex-col flex-grow">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-2xl font-bold text-white group-hover:text-rose-300 transition-colors">Smart Photobooth</h3>
+                            <span class="text-[10px] font-black bg-rose-500/10 text-rose-400 px-3 py-1 rounded-full uppercase tracking-widest border border-rose-500/20 shadow-[0_0_10px_rgba(190,18,60,0.1)]">Experimental</span>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-8 leading-relaxed">Website eksperimen berbasis kamera yang mengintegrasikan tema visual estetik untuk pengalaman pengguna yang menyenangkan.</p>
+                        <div class="mt-auto flex items-center justify-between">
+                            <div class="flex -space-x-2">
+                                <div class="w-9 h-9 rounded-full bg-slate-900/90 border border-white/10 flex items-center justify-center text-[10px] font-bold text-rose-300 shadow-md">JS</div>
+                                <div class="w-9 h-9 rounded-full bg-slate-900/90 border border-white/10 flex items-center justify-center text-[10px] font-bold text-rose-300 shadow-md">UI</div>
+                            </div>
+                            <a href="https://putriajaya7-png.github.io/photoboothbyqueen/" target="_blank" class="text-rose-400 font-bold text-sm flex items-center hover:text-rose-300 hover:underline transition-colors">
+                                Explore <i class="fa-solid fa-arrow-up-right-from-square ml-2 text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3: IoT Mobile Car -->
+                <div class="project-card glass-panel rounded-[32px] overflow-hidden flex flex-col h-full group relative">
+                    <div class="h-56 bg-slate-900 relative overflow-hidden flex items-center justify-center">
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
+                        <img src="https://i.ibb.co/3qm9gVb/Whats-App-Image-2026-05-06-at-18-17-54.jpg" 
+                             alt="IoT Mobile Car" 
+                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108">
+                        <button onclick="openVideoModal('OiLDJTl-prQ')" class="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                             <div class="w-16 h-16 bg-white/95 rounded-full flex items-center justify-center text-slate-950 shadow-2xl scale-90 group-hover:scale-100 transition-transform duration-300 hover:bg-rose-600 hover:text-white">
+                                <i class="fa-solid fa-play text-xl ml-1"></i>
+                             </div>
+                        </button>
+                    </div>
+                    <div class="p-8 flex flex-col flex-grow">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-2xl font-bold text-white group-hover:text-rose-300 transition-colors">IoT Mobile Car</h3>
+                            <span class="text-[10px] font-black bg-blue-500/10 text-blue-400 px-3 py-1 rounded-full uppercase tracking-widest border border-blue-500/20 shadow-[0_0_10px_rgba(59,130,246,0.1)]">Hardware</span>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-8 leading-relaxed">Kolaborasi perangkat keras dan lunak; mobil pintar yang dapat dikendalikan sepenuhnya melalui koneksi smartphone.</p>
+                        <div class="mt-auto flex items-center justify-between">
+                            <div class="flex -space-x-2">
+                                <div class="w-9 h-9 rounded-full bg-slate-900/90 border border-white/10 flex items-center justify-center text-[10px] font-bold text-rose-300 shadow-md">IoT</div>
+                                <div class="w-9 h-9 rounded-full bg-slate-900/90 border border-white/10 flex items-center justify-center text-[10px] font-bold text-rose-300 shadow-md">CPP</div>
+                            </div>
+                            <button onclick="openVideoModal('OiLDJTl-prQ')" class="text-rose-400 font-bold text-sm flex items-center hover:text-rose-300 hover:underline transition-colors">
+                                Watch Demo <i class="fa-solid fa-circle-play ml-2 text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4: Digital Library System -->
+                <div class="project-card glass-panel rounded-[32px] overflow-hidden flex flex-col h-full group">
+                    <div class="h-56 bg-slate-900 relative overflow-hidden flex items-center justify-center">
+                        <div class="absolute inset-0 bg-gradient-to-br from-rose-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
+                        <img src="https://i.ibb.co.com/whFfXWqz/Whats-App-Image-2026-05-07-at-15-03-44.jpg" 
+                             alt="Digital Library" 
+                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108">
+                    </div>
+                    <div class="p-8 flex flex-col flex-grow">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-2xl font-bold text-white group-hover:text-rose-300 transition-colors">Digital Library</h3>
+                            <span class="text-[10px] font-black bg-rose-500/10 text-rose-400 px-3 py-1 rounded-full uppercase tracking-widest border border-rose-500/20 shadow-[0_0_10px_rgba(190,18,60,0.1)]">Management System</span>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-8 leading-relaxed">Sistem manajemen perpustakaan modern untuk mempermudah pendataan buku, peminjaman, dan pengembalian secara efisien.</p>
+                        <div class="mt-auto flex items-center justify-between">
+                            <div class="flex -space-x-2">
+                                <div class="w-9 h-9 rounded-full bg-slate-900/90 border border-white/10 flex items-center justify-center text-[10px] font-bold text-rose-300 shadow-md">PHP</div>
+                                <div class="w-9 h-9 rounded-full bg-slate-900/90 border border-white/10 flex items-center justify-center text-[10px] font-bold text-rose-300 shadow-md">SQL</div>
+                            </div>
+                            <a href="https://library.lovestoblog.com" target="_blank" class="text-rose-400 font-bold text-sm flex items-center hover:text-rose-300 hover:underline transition-colors">
+                                Launch App <i class="fa-solid fa-arrow-up-right-from-square ml-2 text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="py-32 px-6 bg-[#03030d] relative">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-20 space-y-4">
+                <h3 class="text-rose-400 font-bold tracking-[0.25em] text-xs uppercase">Technical Stack</h3>
+                <h2 class="text-4xl font-extrabold text-white">Expertise Area</h2>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="skill-badge p-10 rounded-[32px] text-center space-y-4">
+                    <div class="w-16 h-16 bg-rose-500/10 border border-rose-500/20 rounded-2xl flex items-center justify-center text-rose-400 mx-auto shadow-[0_0_15px_rgba(190,18,60,0.2)]">
+                        <i class="fa-solid fa-code text-3xl"></i>
+                    </div>
+                    <h4 class="font-bold text-white uppercase tracking-widest text-xs">Web Dev</h4>
+                    <p class="text-[10px] text-slate-500 font-bold mt-1">PHP, HTML, CSS</p>
+                </div>
+
+                <div class="skill-badge p-10 rounded-[32px] text-center space-y-4">
+                    <div class="w-16 h-16 bg-blue-500/10 border border-blue-500/20 rounded-2xl flex items-center justify-center text-blue-400 mx-auto shadow-[0_0_15px_rgba(59,130,246,0.2)]">
+                        <i class="fa-solid fa-brain text-3xl"></i>
+                    </div>
+                    <h4 class="font-bold text-white uppercase tracking-widest text-xs">AI Tools</h4>
+                    <p class="text-[10px] text-slate-500 font-bold mt-1">Gemini AI API</p>
+                </div>
+
+                <div class="skill-badge p-10 rounded-[32px] text-center space-y-4">
+                    <div class="w-16 h-16 bg-rose-500/10 border border-rose-500/20 rounded-2xl flex items-center justify-center text-rose-400 mx-auto shadow-[0_0_15px_rgba(190,18,60,0.2)]">
+                        <i class="fa-solid fa-microchip text-3xl"></i>
+                    </div>
+                    <h4 class="font-bold text-white uppercase tracking-widest text-xs">IoT Tech</h4>
+                    <p class="text-[10px] text-slate-500 font-bold mt-1">Hardware Integration</p>
+                </div>
+
+                <div class="skill-badge p-10 rounded-[32px] text-center space-y-4">
+                    <div class="w-16 h-16 bg-blue-500/10 border border-blue-500/20 rounded-2xl flex items-center justify-center text-blue-400 mx-auto shadow-[0_0_15px_rgba(59,130,246,0.2)]">
+                        <i class="fa-solid fa-users-gear text-3xl"></i>
+                    </div>
+                    <h4 class="font-bold text-white uppercase tracking-widest text-xs">Leadership</h4>
+                    <p class="text-[10px] text-slate-500 font-bold mt-1">Team Management</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-950 border-t border-white/5 pt-24 pb-12 px-6 relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-12 pb-20 border-b border-white/5">
+                <div class="space-y-6">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-2xl font-extrabold text-white">PORTOFOLIO<span class="text-rose-400">.</span></span>
+                    </div>
+                    <p class="text-slate-400 max-w-sm italic">"Turning ideas into digital reality through high-quality code and effective leadership."</p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-6 sm:gap-12">
+                    <div class="space-y-4">
+                        <h4 class="font-bold text-white text-xs uppercase tracking-widest">Connect</h4>
+                        <div class="flex gap-4">
+                            <a href="mailto:putriajaya7@gmail.com" class="w-12 h-12 glass-panel rounded-xl flex items-center justify-center text-slate-300 hover:bg-rose-600 hover:text-white hover:border-rose-400 hover:-translate-y-1 transition-all duration-300 shadow-md">
+                                <i class="fa-solid fa-envelope"></i>
+                            </a>
+                            <a href="#" class="w-12 h-12 glass-panel rounded-xl flex items-center justify-center text-slate-300 hover:bg-rose-600 hover:text-white hover:border-rose-400 hover:-translate-y-1 transition-all duration-300 shadow-md">
+                                <i class="fa-brands fa-linkedin-in"></i>
+                            </a>
+                            <a href="#" class="w-12 h-12 glass-panel rounded-xl flex items-center justify-center text-slate-300 hover:bg-rose-600 hover:text-white hover:border-rose-400 hover:-translate-y-1 transition-all duration-300 shadow-md">
+                                <i class="fa-brands fa-instagram"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-12 flex flex-col md:flex-row justify-between items-center gap-6 text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em]">
+                <p>&copy; 2024 AMALIA PUTRI BAROKAH. ALL RIGHTS RESERVED.</p>
+                <div class="flex space-x-8">
+                    <span>SMK Negeri 4 Batam</span>
+                    <span class="text-rose-400">Software Engineering</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="videoModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/95 p-4">
+        <div class="relative w-full max-w-4xl glass-panel rounded-3xl overflow-hidden shadow-2xl">
+            <button onclick="closeVideoModal()" class="absolute top-4 right-4 z-[110] w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white text-2xl transition-all">
+                <i class="fa-solid fa-times"></i>
+            </button>
+            <div id="videoFrameContainer" class="aspect-video w-full bg-black flex flex-col items-center justify-center text-center p-6">
+                <!-- Content injected by JS -->
+                <div class="space-y-4">
+                    <i class="fa-brands fa-youtube text-6xl text-red-500"></i>
+                    <h4 class="text-xl font-bold">Video Player</h4>
+                    <p class="text-slate-400 text-sm max-w-xs">Memuat konten...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle Mobile Menu
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Video Modal Logic
+        function openVideoModal(videoId) {
+            const modal = document.getElementById('videoModal');
+            const container = document.getElementById('videoFrameContainer');
+            
+            container.innerHTML = `
+                <iframe class="w-full h-full absolute inset-0" 
+                        src="https://www.youtube.com/embed/${videoId}?autoplay=1" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
+                <div class="relative z-0 p-10 flex flex-col items-center justify-center text-center">
+                    <i class="fa-brands fa-youtube text-6xl text-red-500 mb-4"></i>
+                    <h4 class="text-xl font-bold">Buka di YouTube</h4>
+                    <p class="text-slate-400 text-sm mb-6">Jika video tidak muncul secara otomatis, klik tombol di bawah:</p>
+                    <a href="https://youtu.be/${videoId}" target="_blank" class="px-8 py-3 bg-rose-600 rounded-full font-bold text-white hover:bg-red-700 transition-all">Tonton Langsung</a>
+                </div>
+            `;
+            
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeVideoModal() {
+            const modal = document.getElementById('videoModal');
+            const container = document.getElementById('videoFrameContainer');
+            container.innerHTML = ''; 
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close on ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeVideoModal();
+        });
+
+        // Scroll Observer for Animations
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            section.classList.add('transition-all', 'duration-1000', 'ease-out', 'opacity-0', 'translate-y-10');
+            observer.observe(section);
+        });
+
+        // Smooth Scrolling logic
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if(target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const lowPowerMode = prefersReducedMotion ||
+            (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
+            (navigator.deviceMemory && navigator.deviceMemory <= 4);
+        const getRenderPixelRatio = () => Math.min(window.devicePixelRatio || 1, lowPowerMode ? 1 : 1.25);
+        const getMaxFrameInterval = () => lowPowerMode ? 1000 / 30 : 1000 / 45;
+
+        // =========================================================================
+        // LIGHTFALL WEBGL GENERATOR (Integrated Vanilla implementation of React Bits)
+        // =========================================================================
+        (function() {
+            const MAX_COLORS = 8;
+            const container = document.getElementById('lightfall-bg');
+            if (!container || !window.ogl) return;
+
+            const hexToRGB = hex => {
+                const c = hex.replace('#', '').padEnd(6, '0');
+                const r = parseInt(c.slice(0, 2), 16) / 255;
+                const g = parseInt(c.slice(2, 4), 16) / 255;
+                const b = parseInt(c.slice(4, 6), 16) / 255;
+                return [r, g, b];
+            };
+
+            const prepColors = input => {
+                const base = (input && input.length ? input : ['#fb7185', '#be123c', '#60a5fa']).slice(0, MAX_COLORS);
+                const count = base.length;
+                const arr = [];
+                for (let i = 0; i < MAX_COLORS; i++) arr.push(hexToRGB(base[Math.min(i, base.length - 1)]));
+                const avg = [0, 0, 0];
+                for (let i = 0; i < count; i++) {
+                    avg[0] += arr[i][0];
+                    avg[1] += arr[i][1];
+                    avg[2] += arr[i][2];
+                }
+                avg[0] /= count;
+                avg[1] /= count;
+                avg[2] /= count;
+                return { arr, count, avg };
+            };
+
+            const vertex = `
+                attribute vec2 position;
+                attribute vec2 uv;
+                varying vec2 vUv;
+                void main() {
+                    vUv = uv;
+                    gl_Position = vec4(position, 0.0, 1.0);
+                }
+            `;
+
+            const fragment = `
+                precision highp float;
+                uniform vec3  iResolution;
+                uniform vec2  iMouse;
+                uniform float iTime;
+                uniform vec3  uColor0;
+                uniform vec3  uColor1;
+                uniform vec3  uColor2;
+                uniform vec3  uColor3;
+                uniform vec3  uColor4;
+                uniform vec3  uColor5;
+                uniform vec3  uColor6;
+                uniform vec3  uColor7;
+                uniform int   uColorCount;
+                uniform vec3  uBgColor;
+                uniform vec3  uMouseColor;
+                uniform float uSpeed;
+                uniform int   uStreakCount;
+                uniform float uStreakWidth;
+                uniform float uStreakLength;
+                uniform float uGlow;
+                uniform float uDensity;
+                uniform float uTwinkle;
+                uniform float uZoom;
+                uniform float uBgGlow;
+                uniform float uOpacity;
+                uniform float uMouseEnabled;
+                uniform float uMouseStrength;
+                uniform float uMouseRadius;
+                varying vec2 vUv;
+
+                vec3 palette(float h) {
+                    int count = uColorCount;
+                    if (count < 1) count = 1;
+                    int idx = int(floor(clamp(h, 0.0, 0.999999) * float(count)));
+                    if (idx <= 0) return uColor0;
+                    if (idx == 1) return uColor1;
+                    if (idx == 2) return uColor2;
+                    if (idx == 3) return uColor3;
+                    if (idx == 4) return uColor4;
+                    if (idx == 5) return uColor5;
+                    if (idx == 6) return uColor6;
+                    return uColor7;
+                }
+
+                vec3 tanhv(vec3 x) {
+                    vec3 e = exp(-2.0 * x);
+                    return (1.0 - e) / (1.0 + e);
+                }
+
+                vec2 sceneC(vec2 frag, vec2 r) {
+                    vec2 P = (frag + frag - r) / r.x;
+                    float z = 0.0;
+                    float d = 1e3;
+                    vec4 O = vec4(0.0);
+                    for (int k = 0; k < 39; k++) {
+                        if (d <= 1e-4) break;
+                        O = z * normalize(vec4(P, uZoom, 0.0)) - vec4(0.0, 4.0, 1.0, 0.0) / 4.5;
+                        d = 1.0 - sqrt(length(O * O));
+                        z += d;
+                    }
+                    return vec2(O.x, atan(O.z, O.y));
+                }
+
+                void mainImage(out vec4 o, vec2 C) {
+                    vec2 r = iResolution.xy;
+                    vec2 uv0 = (C + C - r) / r.x;
+                    float T = 0.1 * iTime * uSpeed + 9.0;
+                    float angRings = max(1.0, floor(6.28318530718 * max(uDensity, 0.05) + 0.5));
+                    vec2 Y = vec2(5e-3, 6.28318530718 / angRings);
+                    vec2 c0 = sceneC(C, r);
+                    vec2 cdx = sceneC(C + vec2(1.0, 0.0), r);
+                    vec2 cdy = sceneC(C + vec2(0.0, 1.0), r);
+                    vec2 dCx = cdx - c0;
+                    vec2 dCy = cdy - c0;
+                    dCx.y -= 6.28318530718 * floor(dCx.y / 6.28318530718 + 0.5);
+                    dCy.y -= 6.28318530718 * floor(dCy.y / 6.28318530718 + 0.5);
+                    vec2 fw = abs(dCx) + abs(dCy);
+                    C = c0;
+                    vec2 P = vec2(2.0, 1.0) * uv0 - (r / r.x) * vec2(0.0, 1.0);
+                    vec4 O = vec4(uBgColor * 90.0 * uBgGlow / (1e3 * dot(P, P) + 6.0), 0.0);
+                    float mGlow = 0.0;
+                    if (uMouseEnabled > 0.5) {
+                        vec2 mN = (iMouse + iMouse - r) / r.x;
+                        float md = length(uv0 - mN);
+                        mGlow = exp(-md * md / max(uMouseRadius * uMouseRadius, 1e-4)) * uMouseStrength;
+                        O.rgb += uMouseColor * mGlow * 0.25;
+                    }
+                    float zr = 5e-4 * uStreakWidth;
+                    vec2 rr = vec2(max(length(fw), 1e-5));
+                    float tail = 19.0 / max(uStreakLength, 0.05);
+                    for (int m = 0; m < 16; m++) {
+                        if (m >= uStreakCount) break;
+                        float jf = float(m) + 1.0;
+                        float ic = fract(sin(dot(vec2(jf, floor(C.x / Y.x + 0.5)), vec2(7.0, 11.0)) * 73.0));
+                        vec2 Pp = C - (T + T * ic) * vec2(0.0, 1.0);
+                        Pp -= floor(Pp / Y + 0.5) * Y;
+                        float h = fract(8663.0 * ic);
+                        vec3 col = palette(h);
+                        float weight = mix(1.5, 1.0 + sin(T + 7.0 * h + 4.0), uTwinkle);
+                        weight *= (1.0 + mGlow * 2.0);
+                        vec2 inner = vec2(length(max(Pp, vec2(-1.0, 0.0))), length(Pp) - zr) - zr;
+                        vec2 sm = vec2(1.0) - smoothstep(-rr, rr, inner);
+                        O.rgb += dot(sm, vec2(exp(tail * Pp.y), 3.0)) * col * weight;
+                        C.x += Y.x / 8.0;
+                    }
+                    vec3 colr = sqrt(tanhv(max(O.rgb * uGlow - vec3(0.04, 0.08, 0.02), 0.0)));
+                    o = vec4(colr, uOpacity);
+                }
+
+                void main() {
+                    vec4 color;
+                    mainImage(color, vUv * iResolution.xy);
+                    gl_FragColor = color;
+                }
+            `;
+
+            // Colors themed exactly to Velvet Maroon, High-Intensity Crimson, Cyber Cobalt Blue
+            const themeColors = ['#fb7185', '#be123c', '#881337', '#1d4ed8', '#07071a'];
+            const backgroundColor = '#03030d';
+
+            const renderer = new ogl.Renderer({
+                dpr: getRenderPixelRatio(),
+                alpha: true,
+                antialias: !lowPowerMode
+            });
+
+            const gl = renderer.gl;
+            const canvas = gl.canvas;
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            canvas.style.display = 'block';
+            container.appendChild(canvas);
+
+            const { arr, count, avg } = prepColors(themeColors);
+
+            const uniforms = {
+                iResolution: { value: [gl.drawingBufferWidth, gl.drawingBufferHeight, 1] },
+                iMouse: { value: [0, 0] },
+                iTime: { value: 0 },
+                uColor0: { value: arr[0] },
+                uColor1: { value: arr[1] },
+                uColor2: { value: arr[2] },
+                uColor3: { value: arr[3] },
+                uColor4: { value: arr[4] },
+                uColor5: { value: arr[5] },
+                uColor6: { value: arr[6] },
+                uColor7: { value: arr[7] },
+                uColorCount: { value: count },
+                uBgColor: { value: hexToRGB(backgroundColor) },
+                uMouseColor: { value: avg },
+                uSpeed: { value: lowPowerMode ? 0.4 : 0.5 }, // Smooth, graceful falling speed
+                uStreakCount: { value: lowPowerMode ? 4 : 5 }, // Reduced density when needed
+                uStreakWidth: { value: 1.0 },
+                uStreakLength: { value: lowPowerMode ? 1.1 : 1.4 },
+                uGlow: { value: lowPowerMode ? 0.9 : 1.1 },
+                uDensity: { value: lowPowerMode ? 0.45 : 0.6 },
+                uTwinkle: { value: lowPowerMode ? 0.55 : 0.8 },
+                uZoom: { value: lowPowerMode ? 2.0 : 2.2 },
+                uBgGlow: { value: 0.5 },
+                uOpacity: { value: 1.0 },
+                uMouseEnabled: { value: lowPowerMode ? 0.0 : 1.0 },
+                uMouseStrength: { value: 0.7 },
+                uMouseRadius: { value: 0.8 }
+            };
+
+            const program = new ogl.Program(gl, { vertex, fragment, uniforms });
+            const geometry = new ogl.Triangle(gl);
+            const mesh = new ogl.Mesh(gl, { geometry, program });
+
+            const resize = () => {
+                const rect = container.getBoundingClientRect();
+                renderer.setSize(rect.width, rect.height);
+                uniforms.iResolution.value = [gl.drawingBufferWidth, gl.drawingBufferHeight, 1];
+            };
+
+            resize();
+            const ro = new ResizeObserver(resize);
+            ro.observe(container);
+
+            const mouseTarget = [0, 0];
+            window.addEventListener('pointermove', e => {
+                const rect = canvas.getBoundingClientRect();
+                const scale = renderer.dpr || 1;
+                const x = (e.clientX - rect.left) * scale;
+                const y = (rect.height - (e.clientY - rect.top)) * scale;
+                mouseTarget[0] = x;
+                mouseTarget[1] = y;
+            });
+
+            let lastTime = 0;
+            let lastFrameTime = 0;
+            let lightfallActive = true;
+
+            document.addEventListener('visibilitychange', () => {
+                lightfallActive = !document.hidden;
+                if (lightfallActive) {
+                    lastFrameTime = performance.now();
+                    requestAnimationFrame(loop);
+                }
+            });
+
+            const loop = t => {
+                requestAnimationFrame(loop);
+                if (!lightfallActive || t - lastFrameTime < getMaxFrameInterval()) return;
+                lastFrameTime = t;
+                uniforms.iTime.value = t * 0.001;
+
+                // Mouse Dampening calculation for cinematic pointer drag
+                const dt = (t - lastTime) / 1000;
+                lastTime = t;
+                const tau = Math.max(1e-4, 0.15); // Dampening factor
+                let factor = 1 - Math.exp(-dt / tau);
+                if (factor > 1) factor = 1;
+
+                const cur = uniforms.iMouse.value;
+                cur[0] += (mouseTarget[0] - cur[0]) * factor;
+                cur[1] += (mouseTarget[1] - cur[1]) * factor;
+
+                try {
+                    renderer.render({ scene: mesh });
+                } catch (e) {
+                    console.error(e);
+                }
+            };
+            requestAnimationFrame(loop);
+        })();
+
+        // =========================================================================
+        // FLOATING LINES WEBGL GENERATOR (Three.js Shader Adaptation of React Bits)
+        // =========================================================================
+        (function() {
+            const container = document.getElementById('floating-lines-bg');
+            if (!container || !window.THREE) return;
+
+            const vertexShader = `
+                varying vec2 vUv;
+                void main() {
+                    vUv = uv;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `;
+
+            const fragmentShader = `
+                precision highp float;
+                varying vec2 vUv;
+
+                uniform float iTime;
+                uniform vec3  iResolution;
+                uniform float animationSpeed;
+
+                uniform bool enableTop;
+                uniform bool enableMiddle;
+                uniform bool enableBottom;
+
+                uniform int topLineCount;
+                uniform int middleLineCount;
+                uniform int bottomLineCount;
+
+                uniform float topLineDistance;
+                uniform float middleLineDistance;
+                uniform float bottomLineDistance;
+
+                uniform vec3 topWavePosition;
+                uniform vec3 middleWavePosition;
+                uniform vec3 bottomWavePosition;
+
+                uniform vec2 iMouse;
+                uniform bool interactive;
+                uniform float bendRadius;
+                uniform float bendStrength;
+                uniform float bendInfluence;
+
+                uniform bool parallax;
+                uniform float parallaxStrength;
+                uniform vec2 parallaxOffset;
+
+                uniform vec3 lineGradient[8];
+                uniform int lineGradientCount;
+
+                const vec3 BLACK = vec3(0.0);
+                const vec3 PINK  = vec3(233.0, 71.0, 245.0) / 255.0;
+                const vec3 BLUE  = vec3(47.0,  75.0, 162.0) / 255.0;
+
+                mat2 rotate(float r) {
+                    return mat2(cos(r), sin(r), -sin(r), cos(r));
+                }
+
+                vec3 background_color(vec2 uv) {
+                    vec3 col = vec3(0.0);
+                    float y = sin(uv.x - 0.2) * 0.3 - 0.1;
+                    float m = uv.y - y;
+                    col += mix(BLUE, BLACK, smoothstep(0.0, 1.0, abs(m)));
+                    col += mix(PINK, BLACK, smoothstep(0.0, 1.0, abs(m - 0.8)));
+                    return col * 0.5;
+                }
+
+                vec3 getLineColor(float t, vec3 baseColor) {
+                    if (lineGradientCount <= 0) {
+                        return baseColor;
+                    }
+                    vec3 gradientColor;
+                    if (lineGradientCount == 1) {
+                        gradientColor = lineGradient[0];
+                    } else {
+                        float clampedT = clamp(t, 0.0, 0.9999);
+                        float scaled = clampedT * float(lineGradientCount - 1);
+                        int idx = int(floor(scaled));
+                        float f = fract(scaled);
+                        
+                        // Fallback-safe array fetch
+                        vec3 c1 = vec3(1.0);
+                        vec3 c2 = vec3(1.0);
+                        for(int i = 0; i < 8; i++) {
+                            if(i == idx) c1 = lineGradient[i];
+                            if(i == idx + 1) c2 = lineGradient[i];
+                        }
+                        gradientColor = mix(c1, c2, f);
+                    }
+                    return gradientColor * 0.5;
+                }
+
+                float wave(vec2 uv, float offset, vec2 screenUv, vec2 mouseUv, bool shouldBend) {
+                    float time = iTime * animationSpeed;
+                    float x_offset   = offset;
+                    float x_movement = time * 0.1;
+                    float amp        = sin(offset + time * 0.2) * 0.3;
+                    float y          = sin(uv.x + x_offset + x_movement) * amp;
+
+                    if (shouldBend) {
+                        vec2 d = screenUv - mouseUv;
+                        float influence = exp(-dot(d, d) * bendRadius);
+                        float bendOffset = (mouseUv.y - screenUv.y) * influence * bendStrength * bendInfluence;
+                        y += bendOffset;
+                    }
+
+                    float m = uv.y - y;
+                    return 0.0175 / max(abs(m) + 0.01, 1e-3) + 0.01;
+                }
+
+                void mainImage(out vec4 fragColor, in vec2 fragCoord) {
+                    vec2 baseUv = (2.0 * fragCoord - iResolution.xy) / iResolution.y;
+                    baseUv.y *= -1.0;
+                    
+                    if (parallax) {
+                        baseUv += parallaxOffset;
+                    }
+
+                    vec3 col = vec3(0.0);
+                    vec3 b = lineGradientCount > 0 ? vec3(0.0) : background_color(baseUv);
+
+                    vec2 mouseUv = vec2(0.0);
+                    if (interactive) {
+                        mouseUv = (2.0 * iMouse - iResolution.xy) / iResolution.y;
+                        mouseUv.y *= -1.0;
+                    }
+                    
+                    if (enableBottom) {
+                        for (int i = 0; i < 20; ++i) {
+                            if(i >= bottomLineCount) break;
+                            float fi = float(i);
+                            float t = fi / max(float(bottomLineCount - 1), 1.0);
+                            vec3 lineCol = getLineColor(t, b);
+                            
+                            float angle = bottomWavePosition.z * log(length(baseUv) + 1.0);
+                            vec2 ruv = baseUv * rotate(angle);
+                            col += lineCol * wave(
+                                ruv + vec2(bottomLineDistance * fi + bottomWavePosition.x, bottomWavePosition.y),
+                                1.5 + 0.2 * fi,
+                                baseUv,
+                                mouseUv,
+                                interactive
+                            ) * 0.2;
+                        }
+                    }
+
+                    if (enableMiddle) {
+                        for (int i = 0; i < 20; ++i) {
+                            if(i >= middleLineCount) break;
+                            float fi = float(i);
+                            float t = fi / max(float(middleLineCount - 1), 1.0);
+                            vec3 lineCol = getLineColor(t, b);
+                            
+                            float angle = middleWavePosition.z * log(length(baseUv) + 1.0);
+                            vec2 ruv = baseUv * rotate(angle);
+                            col += lineCol * wave(
+                                ruv + vec2(middleLineDistance * fi + middleWavePosition.x, middleWavePosition.y),
+                                2.0 + 0.15 * fi,
+                                baseUv,
+                                mouseUv,
+                                interactive
+                            );
+                        }
+                    }
+
+                    if (enableTop) {
+                        for (int i = 0; i < 20; ++i) {
+                            if(i >= topLineCount) break;
+                            float fi = float(i);
+                            float t = fi / max(float(topLineCount - 1), 1.0);
+                            vec3 lineCol = getLineColor(t, b);
+                            
+                            float angle = topWavePosition.z * log(length(baseUv) + 1.0);
+                            vec2 ruv = baseUv * rotate(angle);
+                            ruv.x *= -1.0;
+                            col += lineCol * wave(
+                                ruv + vec2(topLineDistance * fi + topWavePosition.x, topWavePosition.y),
+                                1.0 + 0.2 * fi,
+                                baseUv,
+                                mouseUv,
+                                interactive
+                            ) * 0.1;
+                        }
+                    }
+
+                    fragColor = vec4(col, 1.0);
+                }
+
+                void main() {
+                    vec4 color = vec4(0.0);
+                    mainImage(color, gl_FragCoord.xy);
+                    gl_FragColor = color;
+                }
+            `;
+
+            function hexToVec3(hex) {
+                let value = hex.trim();
+                if (value.startsWith('#')) {
+                    value = value.slice(1);
+                }
+                let r = 255, g = 255, b = 255;
+                if (value.length === 3) {
+                    r = parseInt(value[0] + value[0], 16);
+                    g = parseInt(value[1] + value[1], 16);
+                    b = parseInt(value[2] + value[2], 16);
+                } else if (value.length === 6) {
+                    r = parseInt(value.slice(0, 2), 16);
+                    g = parseInt(value.slice(2, 4), 16);
+                    b = parseInt(value.slice(4, 6), 16);
+                }
+                return new THREE.Vector3(r / 255, g / 255, b / 255);
+            }
+
+            // High-grade design gradients matches Maroon & Cobalt Cyber Blue
+            const linesGradient = ['#be123c', '#881337', '#1e3a8a', '#fb7185']; 
+            const enabledWaves = lowPowerMode ? ['middle', 'bottom'] : ['top', 'middle', 'bottom'];
+            const lineCount = lowPowerMode ? [8, 10, 14] : [10, 15, 20];
+            const lineDistance = [8, 6, 4];
+
+            const topLineCount = enabledWaves.includes('top') ? lineCount[0] : 0;
+            const middleLineCount = enabledWaves.includes('middle') ? lineCount[1] : 0;
+            const bottomLineCount = enabledWaves.includes('bottom') ? lineCount[2] : 0;
+
+            const topLineDistance = enabledWaves.includes('top') ? lineDistance[0] * 0.01 : 0.01;
+            const middleLineDistance = enabledWaves.includes('middle') ? lineDistance[1] * 0.01 : 0.01;
+            const bottomLineDistance = enabledWaves.includes('bottom') ? lineDistance[2] * 0.01 : 0.01;
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+            camera.position.z = 1;
+
+            const renderer = new THREE.WebGLRenderer({ antialias: !lowPowerMode, alpha: true });
+            renderer.setPixelRatio(getRenderPixelRatio());
+            renderer.domElement.style.width = '100%';
+            renderer.domElement.style.height = '100%';
+            container.appendChild(renderer.domElement);
+
+            const gradientVecs = Array.from({ length: 8 }, () => new THREE.Vector3(1, 1, 1));
+            const stops = linesGradient.slice(0, 8);
+            stops.forEach((hex, i) => {
+                const vec = hexToVec3(hex);
+                gradientVecs[i].copy(vec);
+            });
+
+            const uniforms = {
+                iTime: { value: 0 },
+                iResolution: { value: new THREE.Vector3(1, 1, 1) },
+                animationSpeed: { value: 0.8 },
+
+                enableTop: { value: enabledWaves.includes('top') },
+                enableMiddle: { value: enabledWaves.includes('middle') },
+                enableBottom: { value: enabledWaves.includes('bottom') },
+
+                topLineCount: { value: topLineCount },
+                middleLineCount: { value: middleLineCount },
+                bottomLineCount: { value: bottomLineCount },
+
+                topLineDistance: { value: topLineDistance },
+                middleLineDistance: { value: middleLineDistance },
+                bottomLineDistance: { value: bottomLineDistance },
+
+                topWavePosition: { value: new THREE.Vector3(10.0, 0.5, -0.4) },
+                middleWavePosition: { value: new THREE.Vector3(5.0, 0.0, 0.2) },
+                bottomWavePosition: { value: new THREE.Vector3(2.0, -0.7, 0.4) },
+
+                iMouse: { value: new THREE.Vector2(-1000, -1000) },
+                interactive: { value: !lowPowerMode },
+                bendRadius: { value: 5.0 },
+                bendStrength: { value: -0.5 },
+                bendInfluence: { value: 0 },
+
+                parallax: { value: !lowPowerMode },
+                parallaxStrength: { value: 0.15 },
+                parallaxOffset: { value: new THREE.Vector2(0, 0) },
+
+                lineGradient: { value: gradientVecs },
+                lineGradientCount: { value: stops.length }
+            };
+
+            const material = new THREE.ShaderMaterial({
+                uniforms,
+                vertexShader,
+                fragmentShader,
+                transparent: true
+            });
+
+            const geometry = new THREE.PlaneGeometry(2, 2);
+            const mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
+
+            const clock = new THREE.Clock();
+
+            const setSize = () => {
+                const width = container.clientWidth || 1;
+                const height = container.clientHeight || 1;
+                renderer.setSize(width, height, false);
+                uniforms.iResolution.value.set(renderer.domElement.width, renderer.domElement.height, 1);
+            };
+
+            setSize();
+            window.addEventListener('resize', setSize);
+
+            const targetMouse = new THREE.Vector2(-1000, -1000);
+            const currentMouse = new THREE.Vector2(-1000, -1000);
+            const targetParallax = new THREE.Vector2(0, 0);
+            const currentParallax = new THREE.Vector2(0, 0);
+            let targetInfluence = 0;
+            let currentInfluence = 0;
+
+            if (!lowPowerMode) {
+                window.addEventListener('pointermove', event => {
+                    const rect = renderer.domElement.getBoundingClientRect();
+                    const x = event.clientX - rect.left;
+                    const y = event.clientY - rect.top;
+                    const dpr = renderer.getPixelRatio();
+
+                    targetMouse.set(x * dpr, (rect.height - y) * dpr);
+                    targetInfluence = 1.0;
+
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const offsetX = (x - centerX) / rect.width;
+                    const offsetY = -(y - centerY) / rect.height;
+                    targetParallax.set(offsetX * uniforms.parallaxStrength.value, offsetY * uniforms.parallaxStrength.value);
+                });
+
+                window.addEventListener('pointerleave', () => {
+                    targetInfluence = 0.0;
+                });
+            }
+
+            const floatingLinesTargetFPS = lowPowerMode ? 30 : 50;
+            const floatingLinesFrameInterval = 1000 / floatingLinesTargetFPS;
+            let lastFloatingFrame = 0;
+            let floatingLinesActive = true;
+
+            document.addEventListener('visibilitychange', () => {
+                floatingLinesActive = !document.hidden;
+                if (floatingLinesActive) {
+                    lastFloatingFrame = performance.now();
+                    requestAnimationFrame(renderLoop);
+                }
+            });
+
+            const renderLoop = time => {
+                requestAnimationFrame(renderLoop);
+                if (!floatingLinesActive || time - lastFloatingFrame < floatingLinesFrameInterval) return;
+                lastFloatingFrame = time;
+
+                uniforms.iTime.value = clock.getElapsedTime();
+
+                // Smooth damping easing
+                currentMouse.lerp(targetMouse, 0.05);
+                uniforms.iMouse.value.copy(currentMouse);
+
+                currentInfluence += (targetInfluence - currentInfluence) * 0.05;
+                uniforms.bendInfluence.value = currentInfluence;
+
+                currentParallax.lerp(targetParallax, 0.05);
+                uniforms.parallaxOffset.value.copy(currentParallax);
+
+                renderer.render(scene, camera);
+            };
+            renderLoop();
+        })();
+    </script>
+</body>
+</html>
