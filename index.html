@@ -130,7 +130,6 @@
             text-shadow: 0 0 15px rgba(251, 113, 133, 0.6);
         }
 
-        /* Project Cards with Magnetic Maroon Edge */
         .project-card {
             transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
@@ -324,7 +323,7 @@
                 </h1>
 
                 <p class="text-lg text-slate-400 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                    Siswi Rekayasa Perangkat Lunak dari <span class="text-white font-semibold">SMK Negeri 4 Batam</span>. Berfokus pada pengembangan sistem web modern, integrasi AI, dan solusi IoT dengan pendekatan kepemimpinan yang tegas dan terstruktur.
+                    alumni Siswi Rekayasa Perangkat Lunak dari <span class="text-white font-semibold">SMK Negeri 4 Batam</span>. Berfokus pada pengembangan sistem web modern, integrasi AI, dan solusi IoT dengan pendekatan kepemimpinan yang tegas dan terstruktur.
                 </p>
 
                 <div class="flex flex-wrap justify-center lg:justify-start gap-5">
@@ -528,8 +527,6 @@
                         </div>
                     </div>
                 </div>
-
-                
                 <div class="project-card glass-panel rounded-[32px] overflow-hidden flex flex-col h-full group">
                     <div class="h-56 bg-slate-900 relative overflow-hidden flex items-center justify-center">
                         <div class="absolute inset-0 bg-gradient-to-br from-rose-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
@@ -606,7 +603,7 @@
             <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-12 pb-20 border-b border-white/5">
                 <div class="space-y-6">
                     <div class="flex items-center space-x-2">
-                        <span class="text-2xl font-extrabold text-white">PORTOFOLIO<span class="text-rose-400">.</span></span>
+                        <span class="text-2xl font-extrabold text-white">PORTOFOLIO<span class="text-rose-400"></span></span>
                     </div>
                     <p class="text-slate-400 max-w-sm italic">"Turning ideas into digital reality through high-quality code and effective leadership."</p>
                 </div>
@@ -633,7 +630,7 @@
                 <p>&copy; 2024 AMALIA PUTRI BAROKAH. ALL RIGHTS RESERVED.</p>
                 <div class="flex space-x-8">
                     <span>SMK Negeri 4 Batam</span>
-                    <span class="text-rose-400">Software Engineering</span>
+                    <span class="text-rose-400">Junior Developer</span>
                 </div>
             </div>
         </div>
@@ -654,19 +651,14 @@
             </div>
         </div>
     </div>
-
     <script>
-        // Toggle Mobile Menu
         function toggleMenu() {
             const menu = document.getElementById('mobileMenu');
             menu.classList.toggle('hidden');
         }
-
-      
         function openVideoModal(videoId) {
             const modal = document.getElementById('videoModal');
             const container = document.getElementById('videoFrameContainer');
-            
             container.innerHTML = `
                 <iframe class="w-full h-full absolute inset-0" 
                         src="https://www.youtube.com/embed/${videoId}?autoplay=1" 
@@ -693,13 +685,9 @@
             modal.classList.add('hidden');
             document.body.style.overflow = 'auto';
         }
-
-     
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeVideoModal();
         });
-
-       
         const observerOptions = {
             threshold: 0.15,
             rootMargin: '0px 0px -50px 0px'
@@ -718,8 +706,6 @@
             section.classList.add('transition-all', 'duration-1000', 'ease-out', 'opacity-0', 'translate-y-10');
             observer.observe(section);
         });
-
-       
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -740,8 +726,6 @@
         const enableFloatingLines = true;
         const getRenderPixelRatio = () => 1;
         const getMaxFrameInterval = () => 1000 / 30;
-
-       
         (function() {
             const MAX_COLORS = 8;
             const container = document.getElementById('lightfall-bg');
@@ -749,7 +733,6 @@
                 if (container) container.style.display = 'none';
                 return;
             }
-
             const hexToRGB = hex => {
                 const c = hex.replace('#', '').padEnd(6, '0');
                 const r = parseInt(c.slice(0, 2), 16) / 255;
@@ -901,8 +884,6 @@
                     gl_FragColor = color;
                 }
             `;
-
-
             const themeColors = ['#fb7185', '#be123c', '#881337', '#1d4ed8', '#07071a'];
             const backgroundColor = '#03030d';
 
@@ -950,7 +931,6 @@
                 uMouseStrength: { value: 0.7 },
                 uMouseRadius: { value: 0.8 }
             };
-
             const program = new ogl.Program(gl, { vertex, fragment, uniforms });
             const geometry = new ogl.Triangle(gl);
             const mesh = new ogl.Mesh(gl, { geometry, program });
@@ -960,7 +940,6 @@
                 renderer.setSize(rect.width, rect.height);
                 uniforms.iResolution.value = [gl.drawingBufferWidth, gl.drawingBufferHeight, 1];
             };
-
             resize();
             const ro = new ResizeObserver(resize);
             ro.observe(container);
@@ -1012,8 +991,6 @@
             };
             requestAnimationFrame(loop);
         })();
-
-       
         (function() {
             const container = document.getElementById('floating-lines-bg');
             if (!container || !window.THREE) return;
