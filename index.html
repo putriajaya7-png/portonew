@@ -3,28 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amalia Putri | Software Engineer & Team Leader</title>
+    <title>Amalia Putri | Junior Developer & Team Leader</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Load OGL library for high-performance WebGL Lightfall component -->
+    
     <script src="https://unpkg.com/ogl@1.0.0/dist/ogl.umd.js"></script>
     
-    <!-- Load Three.js library for high-performance WebGL FloatingLines component -->
+   
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         
         :root {
-            --navy-deep: #03030d;      /* Pitch-dark royal navy */
-            --navy-dark: #07071a;      /* Deep midnight blue layer */
-            --navy-surface: #0d0d26;   /* Rich glass surface */
-            --maroon-deep: #4c0519;    /* Rich velvet maroon */
-            --maroon-glow: #be123c;    /* High-intensity crimson/maroon core */
-            --maroon-bright: #fb7185;  /* Sparkling light rose/maroon */
-            --cobalt-glow: #1d4ed8;    /* Cyber blue contrast shadow */
-            --cobalt-bright: #60a5fa;  /* Electric sky blue accent */
+            --navy-deep: #03030d;      
+            --navy-dark: #07071a;      
+            --navy-surface: #0d0d26;   
+            --maroon-deep: #4c0519;    
+            --maroon-glow: #be123c;   
+            --maroon-bright: #fb7185;  
+            --cobalt-glow: #1d4ed8;    
+            --cobalt-bright: #60a5fa; 
         }
 
         body {
@@ -32,7 +32,7 @@
             background-color: var(--navy-deep);
             color: #f1f5f9;
             overflow-x: hidden;
-            /* Premium Cyber Midnight Background Grid with Dual Glows */
+           
             background-image: 
                 radial-gradient(at 0% 0%, rgba(190, 18, 60, 0.15) 0px, transparent 55%),
                 radial-gradient(at 100% 0%, rgba(29, 78, 216, 0.12) 0px, transparent 50%),
@@ -44,7 +44,7 @@
             background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 70px 70px, 70px 70px;
         }
 
-        /* Lightfall canvas container style */
+       
         #lightfall-bg {
             position: fixed;
             inset: 0;
@@ -56,7 +56,7 @@
             opacity: 0.7;
         }
 
-        /* FloatingLines canvas container style */
+      
         #floating-lines-bg {
             position: fixed;
             inset: 0;
@@ -68,7 +68,7 @@
             opacity: 0.65;
         }
 
-        /* Ultra Premium Glassmorphism with Maroon Neon Edge Glow */
+       
         .glass-panel {
             background: rgba(13, 13, 38, 0.65);
             backdrop-filter: blur(25px);
@@ -79,7 +79,6 @@
                 inset 0 1px 2px rgba(255, 255, 255, 0.05);
         }
 
-        /* Metallic Crimson-Cobalt Text Gradient */
         .text-gradient {
             background: linear-gradient(135deg, var(--cobalt-bright) 0%, var(--maroon-bright) 50%, var(--maroon-glow) 100%);
             -webkit-background-clip: text;
@@ -94,7 +93,6 @@
             100% { background-position: 0% center; }
         }
 
-        /* Gacor Glowing Button */
         .btn-primary {
             background: linear-gradient(135deg, #be123c 0%, #1e3a8a 50%, #881337 100%);
             background-size: 200% auto;
@@ -168,7 +166,6 @@
             background: linear-gradient(135deg, var(--maroon-bright), var(--cobalt-bright));
         }
 
-        /* Holographic Pulsing Skill Badges */
         .skill-badge {
             background: rgba(13, 13, 38, 0.4);
             border: 1px solid rgba(190, 18, 60, 0.15);
@@ -199,7 +196,6 @@
             opacity: 1;
         }
 
-        /* Float & Pulse Effects */
         @keyframes float {
             0% { transform: translateY(0px) rotate(0deg); }
             50% { transform: translateY(-15px) rotate(0.5deg); }
@@ -220,7 +216,7 @@
             animation: pulseGlow 4s ease-in-out infinite;
         }
 
-        /* Custom Premium Scrollbar */
+   
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -239,7 +235,7 @@
             transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Animated moving background for About section */
+       
         #about {
             position: relative;
             overflow: hidden;
@@ -277,7 +273,7 @@
 </head>
 <body class="selection:bg-rose-950/40 selection:text-rose-200">
 
-    <!-- Interactive WebGL Background Layers -->
+    
     <div id="lightfall-bg"></div>
     <div id="floating-lines-bg"></div>
 
@@ -344,7 +340,7 @@
 
             <div class="relative flex justify-center lg:justify-end animate-float">
                 <div class="relative group">
-                    <!-- High-tech Matrix Aura behind Image -->
+                    
                     <div class="absolute -inset-5 bg-gradient-to-r from-rose-700 via-rose-950 to-blue-900 rounded-[44px] blur opacity-35 group-hover:opacity-55 transition duration-1000"></div>
                     <div class="relative w-72 h-72 lg:w-[400px] lg:h-[400px] rounded-[36px] overflow-hidden border border-rose-500/20 bg-slate-950 shadow-3xl">
                         <img src="https://i.ibb.co/bMhc7TXX/Whats-App-Image-2026-05-05-at-20-20-57.jpg" 
@@ -352,11 +348,11 @@
                              class="w-full h-full object-cover scale-102 group-hover:scale-100 transition-transform duration-700 filter saturate-105"
                              onerror="this.src='https://ui-avatars.com/api/?name=Amalia+Putri&background=9f1239&color=fff&size=512'">
                         
-                        <!-- Premium overlay -->
+                   
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
                     </div>
                     
-                    <!-- Decorative Floating Cyber Glass Panel -->
+                    
                     <div class="absolute -bottom-6 -right-6 glass-panel p-5 rounded-2xl border border-white/10 shadow-2xl hidden md:block transition-all duration-300 group-hover:transform group-hover:translate-x-2 group-hover:translate-y-2">
                         <div class="flex items-center space-x-3">
                             <div class="w-10 h-10 bg-rose-500/20 rounded-full flex items-center justify-center text-rose-400">
@@ -453,7 +449,7 @@
             </div>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Project 1: Angkasa Web -->
+                
                 <div class="project-card glass-panel rounded-[32px] overflow-hidden flex flex-col h-full group">
                     <div class="h-56 bg-slate-900 relative overflow-hidden flex items-center justify-center">
                         <div class="absolute inset-0 bg-gradient-to-br from-rose-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
@@ -479,7 +475,6 @@
                     </div>
                 </div>
 
-                <!-- Project 2: Smart Photobooth -->
                 <div class="project-card glass-panel rounded-[32px] overflow-hidden flex flex-col h-full group">
                     <div class="h-56 bg-slate-900 relative overflow-hidden flex items-center justify-center">
                         <div class="absolute inset-0 bg-gradient-to-br from-rose-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
@@ -505,7 +500,6 @@
                     </div>
                 </div>
 
-                <!-- Project 3: IoT Mobile Car -->
                 <div class="project-card glass-panel rounded-[32px] overflow-hidden flex flex-col h-full group relative">
                     <div class="h-56 bg-slate-900 relative overflow-hidden flex items-center justify-center">
                         <div class="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
@@ -536,7 +530,7 @@
                     </div>
                 </div>
 
-                <!-- Project 4: Digital Library System -->
+                
                 <div class="project-card glass-panel rounded-[32px] overflow-hidden flex flex-col h-full group">
                     <div class="h-56 bg-slate-900 relative overflow-hidden flex items-center justify-center">
                         <div class="absolute inset-0 bg-gradient-to-br from-rose-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
@@ -652,7 +646,7 @@
                 <i class="fa-solid fa-times"></i>
             </button>
             <div id="videoFrameContainer" class="aspect-video w-full bg-black flex flex-col items-center justify-center text-center p-6">
-                <!-- Content injected by JS -->
+               
                 <div class="space-y-4">
                     <i class="fa-brands fa-youtube text-6xl text-red-500"></i>
                     <h4 class="text-xl font-bold">Video Player</h4>
@@ -669,7 +663,7 @@
             menu.classList.toggle('hidden');
         }
 
-        // Video Modal Logic
+      
         function openVideoModal(videoId) {
             const modal = document.getElementById('videoModal');
             const container = document.getElementById('videoFrameContainer');
@@ -701,12 +695,12 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Close on ESC
+     
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeVideoModal();
         });
 
-        // Scroll Observer for Animations
+       
         const observerOptions = {
             threshold: 0.15,
             rootMargin: '0px 0px -50px 0px'
@@ -726,7 +720,7 @@
             observer.observe(section);
         });
 
-        // Smooth Scrolling logic
+       
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -748,9 +742,7 @@
         const getRenderPixelRatio = () => 1;
         const getMaxFrameInterval = () => 1000 / 30;
 
-        // =========================================================================
-        // LIGHTFALL WEBGL GENERATOR (Integrated Vanilla implementation of React Bits)
-        // =========================================================================
+       
         (function() {
             const MAX_COLORS = 8;
             const container = document.getElementById('lightfall-bg');
@@ -911,7 +903,7 @@
                 }
             `;
 
-            // Colors themed exactly to Velvet Maroon, High-Intensity Crimson, Cyber Cobalt Blue
+
             const themeColors = ['#fb7185', '#be123c', '#881337', '#1d4ed8', '#07071a'];
             const backgroundColor = '#03030d';
 
@@ -945,8 +937,8 @@
                 uColorCount: { value: count },
                 uBgColor: { value: hexToRGB(backgroundColor) },
                 uMouseColor: { value: avg },
-                uSpeed: { value: lowPowerMode ? 0.4 : 0.5 }, // Smooth, graceful falling speed
-                uStreakCount: { value: lowPowerMode ? 4 : 5 }, // Reduced density when needed
+                uSpeed: { value: lowPowerMode ? 0.4 : 0.5 }, 
+                uStreakCount: { value: lowPowerMode ? 4 : 5 }, 
                 uStreakWidth: { value: 1.0 },
                 uStreakLength: { value: lowPowerMode ? 1.1 : 1.4 },
                 uGlow: { value: lowPowerMode ? 0.9 : 1.1 },
@@ -1002,10 +994,10 @@
                 lastFrameTime = t;
                 uniforms.iTime.value = t * 0.001;
 
-                // Mouse Dampening calculation for cinematic pointer drag
+                
                 const dt = (t - lastTime) / 1000;
                 lastTime = t;
-                const tau = Math.max(1e-4, 0.15); // Dampening factor
+                const tau = Math.max(1e-4, 0.15); 
                 let factor = 1 - Math.exp(-dt / tau);
                 if (factor > 1) factor = 1;
 
@@ -1022,9 +1014,7 @@
             requestAnimationFrame(loop);
         })();
 
-        // =========================================================================
-        // FLOATING LINES WEBGL GENERATOR (Three.js Shader Adaptation of React Bits)
-        // =========================================================================
+       
         (function() {
             const container = document.getElementById('floating-lines-bg');
             if (!container || !window.THREE) return;
@@ -1237,7 +1227,7 @@
                 return new THREE.Vector3(r / 255, g / 255, b / 255);
             }
 
-            // High-grade design gradients matches Maroon & Cobalt Cyber Blue
+            
             const linesGradient = ['#be123c', '#881337', '#1e3a8a', '#fb7185']; 
             const enabledWaves = ['middle'];
             const lineCount = [0, 10, 0];
